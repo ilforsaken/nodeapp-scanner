@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pulseboard · Analytics</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><span class="brand-mark">P</span><span>pulseboard</span></div>
+    <div class="workspace"><span class="avatar purple">AM</span><div><strong>Acme workspace</strong><small>Growth team</small></div><span class="chevron">⌄</span></div>
+    <nav>
+      <a class="active" href="/"><span>⌂</span> Overview</a>
+      <a href="/?q=users"><span>◌</span> Audience</a>
+      <a href="/?q=revenue"><span>↗</span> Revenue</a>
+      <a href="/?q=tickets"><span>▤</span> Operations</a>
+    </nav>
+    <div class="nav-label">MANAGE</div>
+    <nav>
+      <a href="/api/metrics"><span>▥</span> Reports</a>
+      <a href="/download?file=README.md"><span>⇩</span> Exports</a>
+      <a href="/api/admin/users"><span>⚙</span> Settings</a>
+    </nav>
+    <div class="sidebar-bottom"><div class="help">?<span>Help center</span></div><div class="profile"><span class="avatar pink">AM</span><div><strong><%= username %></strong><small>Administrator</small></div><span>•••</span></div></div>
+  </aside>
+  <main>
+    <header><div><p class="eyebrow">MONDAY, OCTOBER 31, 2026</p><h1>Good morning, <%= username %> <span>✦</span></h1><p class="subtitle">Here's what's happening with your business today.</p></div><div class="header-actions"><button class="icon-btn">⌕</button><button class="icon-btn">♧<i></i></button><button class="date-btn">Last 30 days <span>⌄</span></button><button class="primary">＋ New report</button></div></header>
+    <section class="cards">
+      <% metrics.forEach((metric) => { %>
+        <article class="metric-card <%= metric.color %>"><div class="metric-top"><span><%= metric.name %></span><button>•••</button></div><div class="metric-value"><%= metric.name === 'Revenue' ? '$' + Number(metric.value).toLocaleString() : metric.value %><small class="change <%= metric.change[0] === '-' ? 'down' : '' %>"><%= metric.change %></small></div><div class="spark"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="metric-foot">Compared to previous period <b>↗</b></div></article>
+      <% }) %>
+    </section>
+    <section class="grid"><article class="panel chart-panel"><div class="panel-head"><div><h2>Revenue overview</h2><p>Monthly recurring revenue performance</p></div><button class="select">Monthly⌄</button></div><div class="chart"><div class="y-axis"><span>$100k</span><span>$75k</span><span>$50k</span><span>$25k</span><span>$0</span></div><div class="chart-area"><div class="gridline"></div><div class="gridline"></div><div class="gridline"></div><div class="gridline"></div><svg viewBox="0 0 720 190" preserveAspectRatio="none"><defs><linearGradient id="fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#8065f5" stop-opacity=".22"/><stop offset="1" stop-color="#8065f5" stop-opacity="0"/></linearGradient></defs><path d="M0,154 C50,143 72,137 110,145 S170,117 210,123 S270,125 310,104 S350,92 390,106 S430,95 470,78 S520,89 555,68 S620,45 650,52 S695,31 720,16 L720,190 L0,190Z" fill="url(#fill)"/><path d="M0,154 C50,143 72,137 110,145 S170,117 210,123 S270,125 310,104 S350,92 390,106 S430,95 470,78 S520,89 555,68 S620,45 650,52 S695,31 720,16" fill="none" stroke="#8065f5" stroke-width="3"/></svg><div class="x-axis"><span>May 01</span><span>May 08</span><span>May 15</span><span>May 22</span><span>May 29</span></div></div></div></article><article class="panel activity"><div class="panel-head"><div><h2>Recent activity</h2><p>Latest updates from your team</p></div><a href="#">View all</a></div><div class="activity-list"><% activity.forEach((item) => { %><div class="activity-row"><span class="avatar <%= item.id % 2 ? 'purple' : 'blue' %>"><%= item.actor.split(' ').map(x => x[0]).join('') %></span><div><strong><%= item.actor %></strong><p><%= item.action %></p></div><time><%= item.created_at.split(' ')[1] %></time></div><% }) %></div></article></section>
+    <section class="bottom-row"><article class="panel insight"><div class="insight-icon">✦</div><div><p class="eyebrow">AI INSIGHT</p><h2>Revenue is trending up</h2><p>Your recurring revenue is up 8.2% this month. At this pace, you'll reach your quarterly goal 5 days early.</p></div><button class="outline">View insights <span>→</span></button></article><article class="panel goal"><div class="panel-head"><div><h2>Quarterly goal</h2><p>Progress toward your target</p></div><span class="goal-percent">78%</span></div><div class="progress"><span></span></div><div class="goal-foot"><span>$312,000 raised</span><b>$400,000 goal</b></div></article></section>
+    <form class="search" action="/" method="get"><label for="q">Try the dashboard search</label><input id="q" name="q" value="<%- q %>" placeholder="Search metrics..."><button>Search</button></form>
+  </main>
+</body>
+</html>
